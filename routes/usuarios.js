@@ -27,7 +27,7 @@ router.put('/:id', [
     validarCampos
 ],  usuariosPut );
 
-router.post('/signup', [
+router.post('/', [
     check('password', 'The password is required and more than 6 letters').isLength({ min: 6 }),
     check('email', 'The email is required').not().isEmpty(),
     check('email', 'The email is not valid').isEmail(),
