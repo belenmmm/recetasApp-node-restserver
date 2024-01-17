@@ -1,28 +1,32 @@
 
 const { response, request } = require('express');
+const jwt = require('jsonwebtoken');
 const  Receta  = require('../models/receta');
 
 
 const recetasGet = async (req = request, res = response) => {
 
-  const query = { estado: true };
- 
-  
-  const [ recetas ]= await Promise.all([
-      
-      Receta.find(query)
-          
-  ]);
+  const { auth } = req.query;
+  const { uid } = jwt.verify( auth, process.env.SECRETORPRIVATEKEY);
+  const recetas = await Receta.find({ usuario: uid, estado: true });
+
+  if (recetas.length === 0) {
+    return res.json({
+      msg: 'Aún no se han agregado recetas',
+    });
+  }
  
   res.json({
       msg: 'get API - recetasGet',
-      recetas 
+      recetas
   }) 
   }
 
   const recetasPost = async (req, res = response) => {
 
     //Verificar si está el nombre y la descripción esta en el middleware
+    const { auth } = req.query;
+    const { uid } = jwt.verify( auth, process.env.SECRETORPRIVATEKEY);
 
     const {name, description, ingredientes, imagePath} = req.body;
     const recetaDB = await Receta.findOne({ name, description, ingredientes, imagePath });
@@ -39,7 +43,8 @@ const recetasGet = async (req = request, res = response) => {
       description, 
       ingredientes, 
       imagePath,
-      usuario: req.usuario._id
+      usuario: uid
+      //usuario: req.usuario._id
     }
 
     const receta = new Receta(data);
@@ -56,16 +61,15 @@ const recetasGet = async (req = request, res = response) => {
   }
 
   const recetasPut = async (req, res = response) => {
+    const { auth } = req.query;
+    const { uid } = jwt.verify( auth, process.env.SECRETORPRIVATEKEY);
 
     const { id } = req.params;
     const data = req.body
 
-    data.usuario = req.usuario._id;
-
     //validar contra base de datos
 
-    const receta = await Receta.findByIdAndUpdate(id, data, { new:true});
-
+    const receta = await Receta.findByIdAndUpdate(id, data,{usuario: uid}, { new:true});
 
     res.json({
         msg: 'put API - recetasPut',
@@ -78,8 +82,8 @@ const recetasGet = async (req = request, res = response) => {
 
     const { id } = req.params;
 
-    //Fisicamente lo borramos
-    //const receta = await Receta.findByIdAndDelete( id );
+    const { auth } = req.query;
+    const { uid } = jwt.verify( auth, process.env.SECRETORPRIVATEKEY);
 
     const receta = await Receta.findByIdAndUpdate( id, { estado:false});
 
