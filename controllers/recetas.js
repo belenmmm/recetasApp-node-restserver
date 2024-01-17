@@ -28,8 +28,8 @@ const recetasGet = async (req = request, res = response) => {
     const { auth } = req.query;
     const { uid } = jwt.verify( auth, process.env.SECRETORPRIVATEKEY);
 
-    const {name, description, ingredientes, imagePath} = req.body;
-    const recetaDB = await Receta.findOne({ name, description, ingredientes, imagePath, usuario: uid});
+    const {name, description, ingredients, imagePath} = req.body;
+    const recetaDB = await Receta.findOne({ name, description, ingredients, imagePath, usuario: uid});
 
     if( recetaDB) {
       return res.status(400).json({
