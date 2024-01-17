@@ -29,6 +29,17 @@ const usuariosPost = async (req, res = response) => {
     //Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
     usuario.password = bcryptjs.hashSync( password, salt );
+
+    const usuarioDB = await Usuario.findOne({ email });
+
+    if( usuarioDB) {
+        return res.status(400).json({
+          msg: `El email ${ usuarioDB.email }, ya está registrado`
+        });
+      }
+
+
+
  
     // Guardar en DB
     await usuario.save();

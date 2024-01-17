@@ -29,11 +29,11 @@ const recetasGet = async (req = request, res = response) => {
     const { uid } = jwt.verify( auth, process.env.SECRETORPRIVATEKEY);
 
     const {name, description, ingredientes, imagePath} = req.body;
-    const recetaDB = await Receta.findOne({ name, description, ingredientes, imagePath });
+    const recetaDB = await Receta.findOne({ name, description, ingredientes, imagePath, usuario: uid});
 
     if( recetaDB) {
       return res.status(400).json({
-        msg: `La receta ${ recetaDB.name }, ya existe`
+        msg: `La receta ${ recetaDB.name }, ya existe para este usuario`
       });
     }
 
