@@ -41,7 +41,7 @@ const recetasGet = async (req = request, res = response) => {
     const data = {
       name,
       description, 
-      ingredientes, 
+      ingredients, 
       imagePath,
       usuario: uid
       //usuario: req.usuario._id
