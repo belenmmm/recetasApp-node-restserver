@@ -17,7 +17,6 @@ const recetasGet = async (req = request, res = response) => {
   }
  
   res.json({
-      msg: 'get API - recetasGet',
       recetas
   }) 
   }
