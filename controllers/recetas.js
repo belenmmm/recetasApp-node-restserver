@@ -16,9 +16,7 @@ const recetasGet = async (req = request, res = response) => {
     });
   }
  
-  res.json({
-      recetas
-  }) 
+  res.json(recetas) 
   }
 
   const recetasPost = async (req, res = response) => {
