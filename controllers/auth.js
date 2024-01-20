@@ -15,7 +15,7 @@ const login = async (req, res = response) => {
         if(!usuario){
             return res.status(400).json({
                 errors:[
-                    { msg: `El email ${email} ya está registrado`}
+                    { msg: `El usuario ${email} no es válido`}
                   ]
             })
         }
