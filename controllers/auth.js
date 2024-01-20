@@ -14,14 +14,18 @@ const login = async (req, res = response) => {
         const usuario = await Usuario.findOne({ email });
         if(!usuario){
             return res.status(400).json({
-                msg:'Usuario / Password no son correctos - email'
+                errors:[
+                    { msg: `El email ${email} ya está registrado`}
+                  ]
             })
         }
 
         //Si el usuario esta activo
         if(!usuario.estado){
             return res.status(400).json({
-                msg:'Usuario / Password no son correctos - estado:false'
+                errors:[
+                    { msg: 'Usuario / Password no son correctos - estado:false' }
+                  ]
             })
         }
 
