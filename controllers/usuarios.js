@@ -34,9 +34,9 @@ const usuariosPost = async (req, res = response) => {
 
     if( usuarioDB) {
         return res.status(400).json({
-            errors{
-                msg: `El email ${ usuarioDB.email }, ya está registrado`
-            }
+            errors: [
+                { msg: `El email ${usuarioDB.email}, ya está registrado` }
+              ]
          
         });
       }
